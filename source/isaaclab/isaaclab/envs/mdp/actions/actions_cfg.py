@@ -52,6 +52,22 @@ class JointPositionActionCfg(JointActionCfg):
 
 
 @configclass
+class ThrustActionCfg(JointActionCfg):
+    """Configuration for the joint velocity action term.
+
+    See :class:`JointVelocityAction` for more details.
+    """
+
+    class_type: type[ActionTerm] = joint_actions.ThrustAction
+
+    thrust_to_weight_ratio: float = MISSING
+    moment_scale: float = MISSING
+    robot_weight: float = MISSING
+    max_velocity: float = MISSING
+    body_names: list[str] = MISSING
+
+
+@configclass
 class RelativeJointPositionActionCfg(JointActionCfg):
     """Configuration for the relative joint position action term.
 

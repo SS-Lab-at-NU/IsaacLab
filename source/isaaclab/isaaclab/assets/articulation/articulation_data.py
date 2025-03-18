@@ -113,12 +113,16 @@ class ArticulationData:
 
     This quantity is configured through the :attr:`isaaclab.assets.ArticulationCfg.init_state` parameter.
     """
+    
+    default_joint_pos_flight: torch.Tensor = None
 
     default_joint_vel: torch.Tensor = None
     """Default joint velocities of all joints. Shape is (num_instances, num_joints).
 
     This quantity is configured through the :attr:`isaaclab.assets.ArticulationCfg.init_state` parameter.
     """
+
+    default_joint_vel_flight: torch.Tensor = None
 
     ##
     # Defaults - Physical properties.

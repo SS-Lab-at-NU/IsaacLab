@@ -160,6 +160,29 @@ class JointPositionAction(JointAction):
         self._asset.set_joint_position_target(self.processed_actions, joint_ids=self._joint_ids)
 
 
+class ThrustAction(JointAction):
+    """Joint action term that applies the processed actions to the articulation's joints as velocity commands."""
+
+    cfg: actions_cfg.ThrustActionCfg
+    """The configuration of the action term."""
+
+    def __init__(self, cfg: actions_cfg.ThrustActionCfg, env: ManagerBasedEnv):
+        # initialize the action term
+        super().__init__(cfg, env)
+
+        self._thrust = torch.zeros(self.num_envs, 4, 3, device=self.device)
+        self._body_ids = self._asset.find_bodies(self.cfg.body_names, preserve_order=True)[0]
+
+    def apply_actions(self):
+        # set joint velocity targets
+        actions = self.processed_actions.clone().clamp(0, 1)
+
+        self._thrust[:, :, 2] = self.cfg.thrust_to_weight_ratio * self.cfg.robot_weight * actions
+
+        self._asset.set_joint_velocity_target(self.cfg.max_velocity * actions, joint_ids=self._joint_ids)
+        self._asset.set_external_force_and_torque(self._thrust, self._body_ids)
+
+
 class RelativeJointPositionAction(JointAction):
     r"""Joint action term that applies the processed actions to the articulation's joints as relative position commands.
 

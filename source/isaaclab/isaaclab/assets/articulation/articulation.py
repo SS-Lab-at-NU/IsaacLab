@@ -1282,16 +1282,27 @@ class Articulation(AssetBase):
         # -- joint state
         self._data.default_joint_pos = torch.zeros(self.num_instances, self.num_joints, device=self.device)
         self._data.default_joint_vel = torch.zeros_like(self._data.default_joint_pos)
-        # joint pos
+        # joint pos --walking
         indices_list, _, values_list = string_utils.resolve_matching_names_values(
             self.cfg.init_state.joint_pos, self.joint_names
         )
         self._data.default_joint_pos[:, indices_list] = torch.tensor(values_list, device=self.device)
-        # joint vel
+        # joint pos --flying
+        indices_list, _, values_list = string_utils.resolve_matching_names_values(
+            self.cfg.init_state.joint_pos_flight, self.joint_names
+        )
+        self._data.default_joint_pos_flight[:, indices_list] = torch.tensor(values_list, device=self.device)
+
+        # joint vel --walking
         indices_list, _, values_list = string_utils.resolve_matching_names_values(
             self.cfg.init_state.joint_vel, self.joint_names
         )
         self._data.default_joint_vel[:, indices_list] = torch.tensor(values_list, device=self.device)
+        # joint vel --flying
+        indices_list, _, values_list = string_utils.resolve_matching_names_values(
+            self.cfg.init_state.joint_vel_flight, self.joint_names
+        )
+        self._data.default_joint_vel_flight[:, indices_list] = torch.tensor(values_list, device=self.device)
 
     """
     Internal simulation callbacks.

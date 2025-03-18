@@ -31,6 +31,10 @@ class ArticulationCfg(AssetBaseCfg):
         """Joint positions of the joints. Defaults to 0.0 for all joints."""
         joint_vel: dict[str, float] = {".*": 0.0}
         """Joint velocities of the joints. Defaults to 0.0 for all joints."""
+        joint_pos_flight: dict[str, float] = {".*": 0.0}
+        """Joint positions of the joints for flight. Defaults to 0.0 for all joints."""
+        joint_vel_flight: dict[str, float] = {".*": 0.0}
+        """Joint velocities of the joints for flight. Defaults to 0.0 for all joints."""
 
     ##
     # Initialize configurations.
